@@ -41,6 +41,17 @@
         </form>
     </footer>
 
+    <!-- Survey Modal -->
+    <div id="survey-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 id="survey-question" class="text-lg font-semibold mb-4"></h2>
+            <div id="survey-options" class="flex flex-col space-y-2"></div>
+            <button id="survey-send-btn"
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled>Complete</button>
+        </div>
+    </div>
+
     <script type="module" src="./src/app.js"></script>
 </body>
 

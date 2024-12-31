@@ -14,4 +14,7 @@
   scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
-/* Additional custom styles if needed */
+/* Survey Modal styles */
+#survey-modal {
+  z-index: 1000;
+}

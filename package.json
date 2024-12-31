@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "rm -rf dist .parcel-cache && parcel serve index.html",
-    "build": "rm -rf dist .parcel-cache && cross-env NODE_ENV=production parcel build index.html --public-url .",
-    "deploy": "gh-pages -d dist"
+    "start": "parcel serve index.html",
+    "build": "parcel build index.html"
   },
   "keywords": [],
   "author": "",
