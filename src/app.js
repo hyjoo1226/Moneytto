@@ -392,6 +392,30 @@ function showQuestion() {
   }
 }
 
+async function sendInvestmentTypeToBackend(investmentType) {
+  const payload = {
+    investmentType
+  };
+
+  try {
+    const response = await fetch(`${BASE_URL}/investment-type`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to send investment type to backend.");
+    }
+
+    const data = await response.json();
+    console.log("Response from backend:", data);
+  } catch (error) {
+    console.error("Error sending investment type:", error);
+  }
+}
 
 function openSurveyModal() {
   surveyModal.classList.remove("hidden");
@@ -421,7 +445,9 @@ function closeSurveyModal() {
     // 모달 닫기 및 결과 출력
     surveyModal.classList.add("hidden");
     alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
+    sendInvestmentTypeToBackend(investmentType);
 }
+
 
 // Event Listener
 surveySendBtn.addEventListener("click", () => {
