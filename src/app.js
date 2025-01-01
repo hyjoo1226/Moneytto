@@ -107,6 +107,11 @@ function createMessageBubble(content, sender = "user") {
 
   if (sender === "assistant") {
     avatar.classList.add("bg-gradient-to-br", "from-green-400", "to-green-600");
+    // const img = document.createElement("img");
+    // img.src = "./src/img/Moneytto_merge.png";
+    // img.alt = "Assistant Avatar";
+    // img.classList.add("w-8", "h-8", "rounded-full");
+    // avatar.appendChild(img);
     avatar.textContent = "A";
   } else {
     avatar.classList.add("bg-gradient-to-br", "from-blue-500", "to-blue-700");
@@ -346,10 +351,10 @@ function showQuestion() {
       button.addEventListener("click", () => {
         if (selectedOptions.has(index)) {
           selectedOptions.delete(index); // 선택 제거
-          button.classList.remove("bg-blue-100"); // 강조 제거
+          button.classList.remove("bg-gray-200"); // 강조 제거
         } else {
           selectedOptions.add(index); // 선택 추가
-          button.classList.add("bg-blue-100"); // 강조 표시
+          button.classList.add("bg-gray-200"); // 강조 표시
         }
         // Next 버튼 활성화 여부 확인
         if (nextButton) {
@@ -375,7 +380,7 @@ function showQuestion() {
   if (isMultipleChoice) {
     nextButton = document.createElement("button"); // Next 버튼 선언
     nextButton.textContent = "다음";
-    nextButton.className = "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed";
+    nextButton.className = "bg-black text-white px-4 py-2 rounded-md hover:bg-black transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed";
     nextButton.disabled = true; // 초기 비활성화
 
     nextButton.addEventListener("click", () => {
@@ -444,7 +449,7 @@ function closeSurveyModal() {
   
     // 모달 닫기 및 결과 출력
     surveyModal.classList.add("hidden");
-    alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
+    // alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
     sendInvestmentTypeToBackend(investmentType);
 }
 

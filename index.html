@@ -4,20 +4,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ChatGPT-like App</title>
+    <title>Moneytto</title>
     <link rel="stylesheet" href="./src/styles.css" />
 </head>
 
 <body class="h-screen flex flex-col bg-gray-100">
     <!-- Header -->
     <header
-        class="p-4 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white flex items-center justify-between">
-        <div class="flex items-center space-x-4">
-            <h1 class="text-xl font-semibold">ChatGPT-like Interface</h1>
-            <button id="new-chat-btn" class="bg-white text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition">+
-                New Chat</button>
+        class="p-4 bg-black text-white flex items-center justify-between">
+        <div class="flex items-center gap-0">
+            <!-- <h1 class="text-xl font-semibold mr-0">Moneytto</h1> -->
+            <img src="./src/img/Moneytto_merge.png" alt="Moneytto" class="w-13 h-12">
         </div>
-        <span class="text-sm opacity-90">Powered by Parcel & Tailwind</span>
+        <button id="new-chat-btn" class="bg-white text-gray-700 px-3 py-1 rounded hover:bg-gray-200 transition">+ 새 채팅</button>
     </header>
 
     <!-- Main chat area -->
@@ -29,14 +28,14 @@
     <footer class="border-t border-gray-300 bg-white p-4">
         <form id="message-form" class="flex items-center space-x-2">
             <input type="text" id="user-input"
-                class="flex-1 border border-gray-300 rounded-md p-2 outline-none focus:border-blue-500"
-                placeholder="Type your message..." required />
-            <select id="api-selector" class="border border-gray-300 rounded-md p-2">
+                class="flex-1 border border-gray-300 rounded-md p-2 outline-none focus:border-gray-800"
+                placeholder="질문을 입력해주세요." required />
+            <!-- <select id="api-selector" class="border border-gray-300 rounded-md p-2">
                 <option value="naive" selected>Naive (/chat)</option>
-                <option value="assistant">Assistant (/assistant)</option>
+                <option value="assistant">Assistant (/assistant)</option> -->
             </select>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                Send
+            <button type="submit" class="bg-black text-white px-4 py-2 rounded-md hover:bg-black transition">
+                보내기
             </button>
         </form>
     </footer>
@@ -47,7 +46,7 @@
             <h2 id="survey-question" class="text-lg font-semibold mb-4"></h2>
             <div id="survey-options" class="flex flex-col space-y-2"></div>
             <button id="survey-send-btn"
-                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled>완료</button>
         </div>
     </div>
