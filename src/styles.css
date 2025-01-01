@@ -16,5 +16,27 @@
 
 /* Survey Modal styles */
 #survey-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
+}
+
+#survey-modal > div {
+  width: 500px; /* 수정: 너비 */
+  max-width: 90%; /* 창 크기에 따라 반응형 */
+  height: auto; /* 수정: 높이를 자동 조정 */
+  max-height: 80%; /* 수정: 최대 높이 제한 */
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* 콘텐츠가 넘칠 경우 스크롤 */
+}
+
+.hidden {
+  display: none !important;
 }

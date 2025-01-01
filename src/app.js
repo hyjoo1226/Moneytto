@@ -239,20 +239,10 @@ initDB().then(loadExistingMessages);
 console.log(BASE_URL);
 
 
-
-// Survey Questions
-const surveyQuestions = [
-  "질문 1번: 당신의 연령대는 어떻게 됩니까?",
-  "질문 2번: 투자하고자 하는 자금의 투자 가능 기간은 얼마나 됩니까?",
-  "질문 3번: 다음 중 투자경험과 가장 가까운 것은 어느 것입니까?(중복 가능)",
-  "질문 4번: 금융상품 투자에 대한 본인의 지식수준은 어느 정도라고 생각하십니까?",
-  "질문 5번: 현재 투자하고자 하는 자금은 전체 금융자산(부동산 등을 제외) 중 어느 정도의 비중을 차지합니까?",
-  "질문 6번: 다음 중 당신의 수입원을 가장 잘 나타내고 있는 것은 어느 것입니까?",
-  "질문 7번: 만약 투자원금에 손실이 발생할 경우 다음 중 감수할 수 있는 손실 수준은 어느 것입니까?",
-];
 // Survey Questions
 const surveyData = [
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 1번: 당신의 연령대는 어떻게 됩니까?",
     options: [
       { text: "19세 이하", value: 12.5 },
@@ -263,6 +253,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 2번: 투자하고자 하는 자금의 투자 가능 기간은 얼마나 됩니까?",
     options: [
       { text: "6개월 이내", value: 3.1 },
@@ -273,6 +264,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 3번: 다음 중 투자경험과 가장 가까운 것은 어느 것입니까?(중복 가능)",
     options: [
       { text: "은행의 예적금, 국채, 지방채, 보증채, MMF, CMA 등", value: 3.1 },
@@ -283,6 +275,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 4번: 금융상품 투자에 대한 본인의 지식수준은 어느 정도라고 생각하십니까?",
     options: [
       { text: "[매우 낮은 수준] 투자의사 결정을 스스로 내려본 경험이 없는 정도", value: 3.1 },
@@ -292,6 +285,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 5번: 현재 투자하고자 하는 자금은 전체 금융자산(부동산 등을 제외) 중 어느 정도의 비중을 차지합니까?",
     options: [
       { text: "10% 이내", value: 1 },
@@ -302,6 +296,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 6번: 다음 중 당신의 수입원을 가장 잘 나타내고 있는 것은 어느 것입니까?",
     options: [
       { text: "현재 일정한 수입이 발생하고 있으며, 향후 현재 수준을 유지하거나 증가할 것으로 예상된다.", value: 9.3 },
@@ -310,6 +305,7 @@ const surveyData = [
     ],
   },
   {
+    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
     question: "질문 7번: 만약 투자원금에 손실이 발생할 경우 다음 중 감수할 수 있는 손실 수준은 어느 것입니까?",
     options: [
       { text: "무슨 일이 있어도 투자원금은 보전되어야 한다.", value: 6.2 },
@@ -325,65 +321,77 @@ const selectedOptions = new Set();
 
 // Functions
 function showQuestion() {
-  const currentData = surveyData[currentQuestionIndex];
-  surveyQuestion.textContent = currentData.question;
-  surveyOptions.innerHTML = ""; // Clear previous options
+  const currentData = surveyData[currentQuestionIndex]; // 현재 데이터 가져오기
 
-  // 3번 질문: 중복 선택 허용
-  const isMultipleChoice = currentQuestionIndex === 2;
+  // desc와 question을 각각 표시
+  surveyQuestion.innerHTML = `
+    <p class="mb-2 text-gray-600">${currentData.desc}</p>
+    <p class="font-semibold">${currentData.question}</p>
+  `;
+
+  surveyOptions.innerHTML = ""; // 기존 옵션 초기화
+
+  const isMultipleChoice = currentQuestionIndex === 2; // 3번 질문: 중복 선택 허용 여부
+  const selectedOptions = new Set(); // 선택된 항목 관리
+
+  let nextButton; // Next 버튼을 함수 스코프 내에서 선언
 
   currentData.options.forEach((option, index) => {
     const button = document.createElement("button");
     button.textContent = option.text;
     button.className = "px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 w-full text-left";
+
     if (isMultipleChoice) {
+      // 중복 선택 허용
       button.addEventListener("click", () => {
         if (selectedOptions.has(index)) {
-          selectedOptions.delete(index); // 이미 선택된 항목은 제거
-          button.classList.remove("bg-blue-100"); // 강조 해제
+          selectedOptions.delete(index); // 선택 제거
+          button.classList.remove("bg-blue-100"); // 강조 제거
         } else {
-          selectedOptions.add(index); // 새로운 항목 추가
+          selectedOptions.add(index); // 선택 추가
           button.classList.add("bg-blue-100"); // 강조 표시
+        }
+        // Next 버튼 활성화 여부 확인
+        if (nextButton) {
+          nextButton.disabled = selectedOptions.size === 0; // 최소 1개 선택 시 활성화
         }
       });
     } else {
+      // 단일 선택 처리
       button.addEventListener("click", () => {
         totalScore += option.value;
         if (currentQuestionIndex < surveyData.length - 1) {
           currentQuestionIndex++;
-          showQuestion();
+          showQuestion(); // 다음 질문으로 이동
         } else {
           surveySendBtn.disabled = false; // 마지막 질문에서 버튼 활성화
         }
       });
     }
-    surveyOptions.appendChild(button);
+    surveyOptions.appendChild(button); // 옵션 추가
   });
 
   // 3번 질문: Next 버튼 제공
   if (isMultipleChoice) {
-    const nextButton = document.createElement("button");
-    nextButton.textContent = "Next";
-    nextButton.className = "mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700";
-    nextButton.disabled = true; // 초기에는 선택 필요
+    nextButton = document.createElement("button"); // Next 버튼 선언
+    nextButton.textContent = "다음";
+    nextButton.className = "bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed";
+    nextButton.disabled = true; // 초기 비활성화
+
     nextButton.addEventListener("click", () => {
-      // 선택된 항목의 점수 계산
+      // 선택된 항목의 점수 합산
       selectedOptions.forEach((index) => {
         totalScore += currentData.options[index].value;
       });
       selectedOptions.clear(); // 선택 초기화
       currentQuestionIndex++;
-      showQuestion();
+      showQuestion(); // 다음 질문
     });
 
-    // Next 버튼 활성화 조건
-    surveyOptions.addEventListener("click", () => {
-      nextButton.disabled = selectedOptions.size === 0; // 선택 항목이 없으면 비활성화
-    });
-
-    surveyOptions.appendChild(nextButton);
+    surveyOptions.appendChild(nextButton); // Next 버튼 추가
   }
 }
+
 
 function openSurveyModal() {
   surveyModal.classList.remove("hidden");
@@ -391,13 +399,28 @@ function openSurveyModal() {
   totalScore = 0;
   selectedOptions.clear();
   surveySendBtn.disabled = true;
-  surveySendBtn.textContent = "Complete";
+  surveySendBtn.textContent = "완료";
   showQuestion();
 }
 
 function closeSurveyModal() {
-  surveyModal.classList.add("hidden");
-  alert(`설문조사가 완료되었습니다! 총 점수: ${totalScore}`);
+    // 투자 성향 설정 로직
+    let investmentType = "";
+    if (totalScore <= 20) {
+      investmentType = "안정형";
+    } else if (totalScore > 20 && totalScore <= 40) {
+      investmentType = "안정추구형";
+    } else if (totalScore > 40 && totalScore <= 60) {
+      investmentType = "위험중립형";
+    } else if (totalScore > 60 && totalScore <= 80) {
+      investmentType = "적극투자형";
+    } else {
+      investmentType = "공격투자형";
+    }
+  
+    // 모달 닫기 및 결과 출력
+    surveyModal.classList.add("hidden");
+    alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
 }
 
 // Event Listener
