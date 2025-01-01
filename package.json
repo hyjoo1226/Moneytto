@@ -18,5 +18,8 @@
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16"
   },
-  "homepage": "https://hyjoo1226.github.io/Moneytto-FE/"
+  "homepage": "https://hyjoo1226.github.io/Moneytto-FE/",
+  "dependencies": {
+    "regenerator-runtime": "^0.14.1"
+  }
 }

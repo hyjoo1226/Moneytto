@@ -11,7 +11,8 @@ const surveyQuestion = document.getElementById("survey-question");
 const surveyOptions = document.getElementById("survey-options");
 const surveySendBtn = document.getElementById("survey-send-btn");
 
-const BASE_URL = process.env.API_ENDPOINT;
+// const BASE_URL = process.env.API_ENDPOINT;
+const BASE_URL = "http://localhost:8000";
 
 let db;
 
