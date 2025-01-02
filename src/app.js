@@ -175,7 +175,7 @@ function showSpinner() {
 
 async function getAssistantResponse(userMessage) {
   
-  showSpinner(); // 요청 시작 시 로딩 스피너 표시
+  // showSpinner(); // 요청 시작 시 로딩 스피너 표시
   const mode = apiSelector.value;
   let url;
   let payload;
@@ -216,7 +216,7 @@ async function getAssistantResponse(userMessage) {
   }
 
   const data = await response.json();
-  hideSpinner();
+  // hideSpinner();
 
   if (mode === "assistant" && data.thread_id) {
     const existingThreadId = await getMetadata("thread_id");
