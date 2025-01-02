@@ -1,7 +1,8 @@
 import "regenerator-runtime/runtime"; // if needed for async/await in older browsers
 
 // DOM Elements
-const chatContainer = document.getElementById("chat-container");
+const chatContainer = document.getElementById("message-container");
+const scrollContainer = document.getElementById("chat-container");
 const messageForm = document.getElementById("message-form");
 const userInput = document.getElementById("user-input");
 const apiSelector = document.getElementById("api-selector");
@@ -90,9 +91,10 @@ async function clearAllData() {
   });
 }
 
+import moneycatImg from '../static/moneycat3.png';
 function createMessageBubble(content, sender = "user") {
   const wrapper = document.createElement("div");
-  wrapper.classList.add("mb-6", "flex", "items-start", "space-x-3");
+  // wrapper.classList.add("mb-6", "flex", "items-start", "space-x-3");
 
   const avatar = document.createElement("div");
   avatar.classList.add(
@@ -109,22 +111,24 @@ function createMessageBubble(content, sender = "user") {
 
   if (sender === "assistant") {
     // wrapper.classList.add("flex-row");
-    avatar.classList.add("bg-gradient-to-br", "from-green-400", "to-green-600");
+    wrapper.classList.add("mb-6", "flex", "items-start", "space-x-3");
+    avatar.classList.add("bg-gradient-to-br", "from-yellow-400", "to-yellow-600");
     const img = document.createElement("img");
-    img.src = "./static/moneycat3.png";
+    img.src = moneycatImg;
     img.alt = "Assistant Avatar";
-    img.classList.add("w-8", "h-8", "rounded-full");
+    img.classList.add("w-10", "h-10", "rounded-full");
     avatar.appendChild(img);
     // avatar.textContent = "A";
   } else {
-    avatar.classList.add("bg-gradient-to-br", "from-blue-500", "to-blue-700");
+    wrapper.classList.add("mb-6", "flex", "items-end", "space-x-3");
+    avatar.classList.add("bg-gradient-to-br", "from-gray-500", "to-gray-700");
     avatar.textContent = "U";
   }
 
   const bubble = document.createElement("div");
   bubble.classList.add(
     "max-w-full",
-    "md:max-w-2xl",
+    "md:max-w-3xl",
     "p-3",
     "rounded-lg",
     "whitespace-pre-wrap",
@@ -134,27 +138,44 @@ function createMessageBubble(content, sender = "user") {
 
   if (sender === "assistant") {
     bubble.classList.add("bg-gray-200", "text-gray-900");
+    wrapper.appendChild(avatar);
+    bubble.textContent = content;
+    wrapper.appendChild(bubble);
   } else {
-    bubble.classList.add("bg-blue-600", "text-white");
+    bubble.classList.add("bg-yellow-600", "text-white");
+    bubble.textContent = content;
+    wrapper.appendChild(bubble);
+    wrapper.appendChild(avatar);
   }
 
-  bubble.textContent = content;
-
-  wrapper.appendChild(avatar);
-  wrapper.appendChild(bubble);
+  
   return wrapper;
 }
 
 function scrollToBottom() {
-  chatContainer.scrollTop = chatContainer.scrollHeight;
+  scrollContainer.scrollTop = scrollContainer.scrollHeight;
+}
+
+const spinner = document.createElement("div");
+spinner.classList.add("spinner", "top-0", "right-0", "mr-4", "mt-3", "w-32", "h-32");
+
+
+// 로딩 완료 후 스피너 숨기기
+function hideSpinner() {
+  chatContainer.appendChild(spinner);
+  spinner.style.display = "none"; // 스피너 숨기기
+  console.log('hideSpinner');
+}
+
+// 로딩 시작
+function showSpinner() {
+  spinner.style.display = "block"; // 스피너 보이기
+  console.log('showSpinner');
 }
 
 async function getAssistantResponse(userMessage) {
-  // return new Promise((resolve) => {
-  //   setTimeout(() => {
-  //     resolve("가짜 GPT 응답: " + userMessage);
-  //   }, 1500)
-  // });
+  
+  showSpinner(); // 요청 시작 시 로딩 스피너 표시
   const mode = apiSelector.value;
   let url;
   let payload;
@@ -195,6 +216,7 @@ async function getAssistantResponse(userMessage) {
   }
 
   const data = await response.json();
+  hideSpinner();
 
   if (mode === "assistant" && data.thread_id) {
     const existingThreadId = await getMetadata("thread_id");
@@ -254,8 +276,8 @@ console.log(BASE_URL);
 // Survey Questions
 const surveyData = [
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 1번: 당신의 연령대는 어떻게 됩니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q1. 당신의 연령대는 어떻게 됩니까?",
     options: [
       { text: "19세 이하", value: 12.5 },
       { text: "20세 ~ 40세", value: 12.5 },
@@ -265,8 +287,8 @@ const surveyData = [
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 2번: 투자하고자 하는 자금의 투자 가능 기간은 얼마나 됩니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q2. 투자하고자 하는 자금의 투자 가능 기간은 얼마나 됩니까?",
     options: [
       { text: "6개월 이내", value: 3.1 },
       { text: "6개월 이상 ~ 1년 이내", value: 6.2 },
@@ -276,8 +298,8 @@ const surveyData = [
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 3번: 다음 중 투자경험과 가장 가까운 것은 어느 것입니까?(중복 가능)",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q3. 다음 중 투자경험과 가장 가까운 것은 어느 것입니까? (최대 2개)",
     options: [
       { text: "은행의 예적금, 국채, 지방채, 보증채, MMF, CMA 등", value: 3.1 },
       { text: "금융채, 신용도가 높은 회사채, 채권형 펀드, 원금보존추구형 ELS 등", value: 6.2 },
@@ -287,8 +309,8 @@ const surveyData = [
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 4번: 금융상품 투자에 대한 본인의 지식수준은 어느 정도라고 생각하십니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q4. 금융상품 투자에 대한 본인의 지식수준은 어느 정도라고 생각하십니까?",
     options: [
       { text: "[매우 낮은 수준] 투자의사 결정을 스스로 내려본 경험이 없는 정도", value: 3.1 },
       { text: "[낮은 수준] 주식과 채권의 차이를 구별할 수 있는 정도", value: 6.2 },
@@ -297,19 +319,19 @@ const surveyData = [
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 5번: 현재 투자하고자 하는 자금은 전체 금융자산(부동산 등을 제외) 중 어느 정도의 비중을 차지합니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q5. 현재 투자하고자 하는 자금은 전체 금융자산(부동산 등을 제외) 중 어느 정도의 비중을 차지합니까?",
     options: [
       { text: "10% 이내", value: 1 },
       { text: "10% 이상 ~ 20% 이내", value: 2 },
       { text: "20% 이상 ~ 30% 이내", value: 3 },
       { text: "30% 이상 ~ 40% 이내", value: 4 },
-      { text: "40%", value: 5 },
+      { text: "40% 이상", value: 5 },
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 6번: 다음 중 당신의 수입원을 가장 잘 나타내고 있는 것은 어느 것입니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q6. 다음 중 당신의 수입원을 가장 잘 나타내고 있는 것은 어느 것입니까?",
     options: [
       { text: "현재 일정한 수입이 발생하고 있으며, 향후 현재 수준을 유지하거나 증가할 것으로 예상된다.", value: 9.3 },
       { text: "현재 일정한 수입이 발생하고 있으나, 향후 감소하거나 불안정할 것으로 예상된다.", value: 6.2 },
@@ -317,8 +339,8 @@ const surveyData = [
     ],
   },
   {
-    desc: "사용자님의 투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
-    question: "질문 7번: 만약 투자원금에 손실이 발생할 경우 다음 중 감수할 수 있는 손실 수준은 어느 것입니까?",
+    desc: "투자성향을 파악하기 위해 7가지의 질문에 답변해주세요.",
+    question: "Q7. 만약 투자원금에 손실이 발생할 경우 다음 중 감수할 수 있는 손실 수준은 어느 것입니까?",
     options: [
       { text: "무슨 일이 있어도 투자원금은 보전되어야 한다.", value: 6.2 },
       { text: "10% 미만까지는 손실을 감수할 수 있을 것 같다.", value: 6.2 },
@@ -337,8 +359,8 @@ function showQuestion() {
 
   // desc와 question을 각각 표시
   surveyQuestion.innerHTML = `
-    <p class="mb-2 text-gray-600">${currentData.desc}</p>
-    <p class="font-semibold">${currentData.question}</p>
+    <p class="mt-0 mb-0 text-gray-400 small-text">${currentData.desc}</p>
+    <p class="font-semibold mb-4">${currentData.question}</p>
   `;
 
   surveyOptions.innerHTML = ""; // 기존 옵션 초기화
@@ -351,17 +373,17 @@ function showQuestion() {
   currentData.options.forEach((option, index) => {
     const button = document.createElement("button");
     button.textContent = option.text;
-    button.className = "px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-100 w-full text-left";
+    button.className = "px-4 py-2 border border-gray-300 rounded-md w-full text-left btn-list-item";
 
     if (isMultipleChoice) {
       // 중복 선택 허용
       button.addEventListener("click", () => {
         if (selectedOptions.has(index)) {
           selectedOptions.delete(index); // 선택 제거
-          button.classList.remove("bg-gray-200"); // 강조 제거
+          button.classList.remove("btn-yellow"); // 강조 제거
         } else {
           selectedOptions.add(index); // 선택 추가
-          button.classList.add("bg-gray-200"); // 강조 표시
+          button.classList.add("btn-yellow"); // 강조 표시
         }
         // Next 버튼 활성화 여부 확인
         if (nextButton) {
@@ -376,6 +398,7 @@ function showQuestion() {
           currentQuestionIndex++;
           showQuestion(); // 다음 질문으로 이동
         } else {
+          button.classList.add("btn-yellow")
           surveySendBtn.disabled = false; // 마지막 질문에서 버튼 활성화
         }
       });
@@ -387,7 +410,7 @@ function showQuestion() {
   if (isMultipleChoice) {
     nextButton = document.createElement("button"); // Next 버튼 선언
     nextButton.textContent = "다음";
-    nextButton.className = "bg-black text-white px-4 py-2 rounded-md hover:bg-black transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed";
+    nextButton.className = "modal-button text-white px-4 py-2 rounded-md transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed modal-button";
     nextButton.disabled = true; // 초기 비활성화
 
     nextButton.addEventListener("click", () => {
@@ -409,6 +432,9 @@ async function sendInvestmentTypeToBackend(investmentType) {
     investmentType
   };
 
+  showSpinner();
+  
+
   try {
     const response = await fetch(`${BASE_URL}/investment-type`, {
       method: "POST",
@@ -423,6 +449,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
     }
 
     const data = await response.json();
+    
     console.log("Response from backend:", data);
     // await saveMessage('assistant', data.reply);
     console.log("save Message");
@@ -431,15 +458,17 @@ async function sendInvestmentTypeToBackend(investmentType) {
       chatContainer.appendChild(createMessageBubble(data.reply, "assistant"));
       // await saveMessage("assistant", response);
       await saveMessage('assistant', data.reply);
+      hideSpinner();
       scrollToBottom();
     } catch (error) {
       console.error("Error fetching assistant response:", error);
       const errMsg = "Error fetching response. Check console.";
       chatContainer.appendChild(createMessageBubble(errMsg, "assistant"));
       await saveMessage("assistant", errMsg);
+      hideSpinner();
       scrollToBottom();
     }
-      
+    
       setTimeout(() => {
         const additionalQuestion = "원하시는 투자상품이 있나요?";
         chatContainer.appendChild(createMessageBubble(additionalQuestion, "assistant"));
@@ -448,7 +477,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
         optionsContainer.classList.add("options-container");
 
         // 투자상품 옵션들
-        const options = ["예금", "적금", "펀드", "채권", "ETF", "직접 입력"];
+        const options = ["예적금", "주식", "펀드", "채권", "ETF", "직접 입력"];
 
         // 각 옵션에 대해 버튼을 생성
         options.forEach(option => {
@@ -471,7 +500,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
         scrollToBottom();
   
         // 추가 질문에 대한 응답을 처리하는 로직 추가 가능
-      }, 2000); // 2초 후에 추가 질문 던지기
+      }, 1000); // 1초 후에 추가 질문 던지기
 
       function handleOptionClick(option) {
         // 사용자가 선택한 옵션에 대해 처리하는 로직
@@ -501,7 +530,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
         if (existingInputContainer) {
           return;  // 이미 입력창이 있으면 새로 생성하지 않음
         }
-        const inputContainer = document.createElement("div");
+        const inputContainer = document.createElement("span");
         inputContainer.classList.add("input-container");
 
         const inputField = document.createElement("input");
@@ -542,7 +571,6 @@ async function sendInvestmentTypeToBackend(investmentType) {
         scrollToBottom();
       }
   
-    
   } catch (error) {
     console.error("Error sending investment type:", error);
   }
@@ -584,6 +612,8 @@ function openSurveyModal() {
   currentQuestionIndex = 0;
   totalScore = 0;
   selectedOptions.clear();
+  surveySendBtn.classList.add("modal-button");
+  surveySendBtn.classList.add("full-width");
   surveySendBtn.disabled = true;
   surveySendBtn.textContent = "완료";
   showQuestion();
@@ -594,11 +624,11 @@ function closeSurveyModal() {
     let investmentType = "";
     if (totalScore <= 20) {
       investmentType = "안정형";
-    } else if (totalScore > 20 && totalScore <= 40) {
+    } else if (totalScore <= 40) {
       investmentType = "안정추구형";
-    } else if (totalScore > 40 && totalScore <= 60) {
+    } else if (totalScore <= 60) {
       investmentType = "위험중립형";
-    } else if (totalScore > 60 && totalScore <= 80) {
+    } else if (totalScore <= 80) {
       investmentType = "적극투자형";
     } else {
       investmentType = "공격투자형";
@@ -606,9 +636,7 @@ function closeSurveyModal() {
   
     // 모달 닫기 및 결과 출력
     surveyModal.classList.add("hidden");
-    // alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
     sendInvestmentTypeToBackend(investmentType);
-    // console.log(getAllMessages())
 }
 
 
@@ -619,9 +647,5 @@ surveySendBtn.addEventListener("click", () => {
 
 // Initialize the survey modal on page load
 document.addEventListener("DOMContentLoaded", () => {
-  // initDB().then(clearAllData());
-  // console.log(getAllMessages());
-  // chatContainer.innerHTML = "";
-  // console.log('aa')
   openSurveyModal();
 });

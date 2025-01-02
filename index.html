@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Moneytto</title>
+    <title><h3>Moneytto</h3></title>
     <link rel="stylesheet" href="./src/styles.css" />
 </head>
 
@@ -21,16 +21,21 @@
 
     <!-- Main chat area -->
     <main id="chat-container" class="flex-1 overflow-y-auto p-4 chat-scroll">
+        <!-- <div class="spinner"></div> -->
         <!-- Messages will be dynamically inserted here -->
+        <div id="message-container" class="message-container">
+
+        </div>
+        <!-- <div wire:loading class="spinner top-0 right-0 mr-4 mt-3"> </div> -->
     </main>
 
     <!-- Input area with endpoint selector -->
     <footer class="border-t border-gray-300 bg-white p-4">
-        <form id="message-form" class="flex items-center space-x-2">
+        <form id="message-form" class="flex items-center space-x-2 input-form">
             <input type="text" id="user-input"
                 class="flex-1 border border-gray-300 rounded-md p-2 outline-none focus:border-gray-800"
                 placeholder="질문을 입력해주세요." required />
-            <select id="api-selector" class="border border-gray-300 rounded-md p-2">
+            <select id="api-selector" class="border border-gray-300 rounded-md p-2 hidden">
                 <option value="naive" selected>Naive (/chat)</option>
                 <option value="assistant">Assistant (/assistant)</option>
             </select>
@@ -46,7 +51,7 @@
             <h2 id="survey-question" class="text-lg font-semibold mb-4"></h2>
             <div id="survey-options" class="flex flex-col space-y-2"></div>
             <button id="survey-send-btn"
-                class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                class="text-white px-4 py-2 rounded-md transition mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled>완료</button>
         </div>
     </div>
