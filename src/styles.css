@@ -40,3 +40,86 @@
 .hidden {
   display: none !important;
 }
+
+/* 옵션 버튼들의 컨테이너 */
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* 버튼들 간 간격 */
+  justify-content: center; /* 버튼들을 가운데 정렬 */
+  margin-top: 20px;
+}
+
+/* 각 옵션 버튼 */
+.option-button {
+  background-color: #4d4d4d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+
+.option-button:hover {
+  background-color: #333333;
+  transform: scale(1.1);
+}
+
+
+.option-button:active {
+  background-color: #333333;
+  transform: scale(0.95);
+}
+
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+/* 입력창 스타일 */
+.input-container input {
+  padding: 12px;
+  margin-right: 10px;
+  border: 1px solid #333333; /* 더 진한 회색 테두리 */
+  border-radius: 5px;
+  width: 300px; /* 너비를 적당하게 설정 */
+  font-size: 16px;
+  background-color: #f4f4f4; /* 밝은 회색 배경 */
+  color: #333333; /* 진한 글자 색 */
+}
+
+.input-container input:focus {
+  outline: none;
+  border-color: #4d4d4d; /* 진한 회색 */
+}
+
+/* 제출 버튼 스타일 */
+.submit-button {
+  background-color: #4d4d4d; /* 진한 회색 */
+  color: #e0e0e0; /* 연한 글자 색 */
+  border: 1px solid #333333; /* 더 진한 회색 테두리 */
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  min-width: 120px; /* 버튼의 최소 너비를 설정하여 균형 있게 만듦 */
+}
+
+.submit-button:hover {
+  background-color: #333333; /* 더 진한 회색 */
+}
+
+/* 버튼이 클릭되었을 때 효과 */
+.submit-button:active {
+  background-color: #2c2c2c; /* 더 어두운 회색 */
+}

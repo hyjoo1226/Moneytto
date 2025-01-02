@@ -11,10 +11,12 @@ const surveyQuestion = document.getElementById("survey-question");
 const surveyOptions = document.getElementById("survey-options");
 const surveySendBtn = document.getElementById("survey-send-btn");
 
+
 // const BASE_URL = process.env.API_ENDPOINT;
 const BASE_URL = "http://localhost:8000";
 
 let db;
+let choice = "";
 
 async function initDB() {
   return new Promise((resolve, reject) => {
@@ -106,6 +108,7 @@ function createMessageBubble(content, sender = "user") {
   );
 
   if (sender === "assistant") {
+    // wrapper.classList.add("flex-row");
     avatar.classList.add("bg-gradient-to-br", "from-green-400", "to-green-600");
     const img = document.createElement("img");
     img.src = "./static/moneycat3.png";
@@ -434,9 +437,135 @@ async function sendInvestmentTypeToBackend(investmentType) {
       await saveMessage("assistant", errMsg);
       scrollToBottom();
     }
+      
+      setTimeout(() => {
+        const additionalQuestion = "원하시는 투자상품이 있나요?";
+        chatContainer.appendChild(createMessageBubble(additionalQuestion, "assistant"));
+        saveMessage("assistant", additionalQuestion);
+        const optionsContainer = document.createElement("div");
+        optionsContainer.classList.add("options-container");
+
+        // 투자상품 옵션들
+        const options = ["예금", "적금", "펀드", "채권", "ETF", "직접 입력"];
+
+        // 각 옵션에 대해 버튼을 생성
+        options.forEach(option => {
+          const optionButton = document.createElement("button");
+          optionButton.classList.add("option-button");
+          optionButton.innerText = option;
+          if (option === "직접 입력") {
+            // "직접 입력" 버튼에 이벤트 추가
+            optionButton.addEventListener("click", handleDirectInput);
+          } else {
+            // 나머지 옵션 버튼
+            optionButton.addEventListener("click", () => handleOptionClick(option));
+          }
+      
+          optionsContainer.appendChild(optionButton);
+        });
+        
+        // optionsContainer를 채팅창에 추가
+        chatContainer.appendChild(optionsContainer);
+        scrollToBottom();
+  
+        // 추가 질문에 대한 응답을 처리하는 로직 추가 가능
+      }, 2000); // 2초 후에 추가 질문 던지기
+
+      function handleOptionClick(option) {
+        // 사용자가 선택한 옵션에 대해 처리하는 로직
+        console.log("사용자가 선택한 옵션:", option);
+        choice = option;
+        sendChoiceToBackend(choice)
+        const responseMessage = `${option}에 대해 더 궁금한 점이 있나요?`;
+        chatContainer.appendChild(createMessageBubble(responseMessage, "assistant"));
+        saveMessage("assistant", responseMessage);
+      
+        const inputContainer = document.querySelector(".input-container");
+        if (inputContainer) {
+          inputContainer.remove();
+        }
+        // 선택지 버튼들을 없앰
+        const optionsContainer = document.querySelector(".options-container");
+        if (optionsContainer) {
+          optionsContainer.remove();
+        }
+      
+        scrollToBottom();
+      }
+      // "직접 입력" 클릭 처리 함수
+      function handleDirectInput() {
+        // 입력창 생성
+        const existingInputContainer = document.querySelector(".input-container");
+        if (existingInputContainer) {
+          return;  // 이미 입력창이 있으면 새로 생성하지 않음
+        }
+        const inputContainer = document.createElement("div");
+        inputContainer.classList.add("input-container");
+
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.placeholder = "투자상품을 입력해주세요.";
+        inputField.classList.add("input-field");
+
+        const submitButton = document.createElement("button");
+        submitButton.innerText = "제출";
+        submitButton.classList.add("submit-button");
+
+        // 제출 버튼 클릭 이벤트
+        submitButton.addEventListener("click", () => {
+          const userInput = inputField.value.trim();
+          if (userInput) {
+            console.log("사용자가 입력한 값:", userInput);
+            choice = userInput;
+            sendChoiceToBackend(choice)
+            const responseMessage = `${userInput}에 대해 더 궁금한 점이 있나요?`;
+            chatContainer.appendChild(createMessageBubble(responseMessage, "assistant"));
+            saveMessage("assistant", responseMessage);
+
+            // 입력창 제거
+            inputContainer.remove();
+            const optionsContainer = document.querySelector(".options-container");
+            if (optionsContainer) {
+              optionsContainer.remove();
+            }
+
+            scrollToBottom();
+          }
+        });
+
+        inputContainer.appendChild(inputField);
+        inputContainer.appendChild(submitButton);
+        chatContainer.appendChild(inputContainer);
+
+        scrollToBottom();
+      }
+  
     
   } catch (error) {
     console.error("Error sending investment type:", error);
+  }
+}
+
+async function sendChoiceToBackend(choice) {
+  const payload = { choice };
+
+  try {
+    const response = await fetch(`${BASE_URL}/send-choice`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to send choice to backend.");
+    }
+
+    const data = await response.json();
+    console.log("Choice:Response from backend:", data);
+  } catch (error) {
+    console.error("Choice:Error sending choice to backend:", error);
   }
 }
 
