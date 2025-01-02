@@ -419,6 +419,22 @@ async function sendInvestmentTypeToBackend(investmentType) {
 
     const data = await response.json();
     console.log("Response from backend:", data);
+    // await saveMessage('assistant', data.reply);
+    console.log("save Message");
+
+    try {
+      chatContainer.appendChild(createMessageBubble(data.reply, "assistant"));
+      // await saveMessage("assistant", response);
+      await saveMessage('assistant', data.reply);
+      scrollToBottom();
+    } catch (error) {
+      console.error("Error fetching assistant response:", error);
+      const errMsg = "Error fetching response. Check console.";
+      chatContainer.appendChild(createMessageBubble(errMsg, "assistant"));
+      await saveMessage("assistant", errMsg);
+      scrollToBottom();
+    }
+    
   } catch (error) {
     console.error("Error sending investment type:", error);
   }
@@ -461,6 +477,7 @@ function closeSurveyModal() {
     surveyModal.classList.add("hidden");
     // alert(`설문조사가 완료되었습니다!\n총 점수: ${totalScore}\n투자 성향: ${investmentType}`);
     sendInvestmentTypeToBackend(investmentType);
+    // console.log(getAllMessages())
 }
 
 
@@ -471,5 +488,9 @@ surveySendBtn.addEventListener("click", () => {
 
 // Initialize the survey modal on page load
 document.addEventListener("DOMContentLoaded", () => {
+  // initDB().then(clearAllData());
+  // console.log(getAllMessages());
+  // chatContainer.innerHTML = "";
+  // console.log('aa')
   openSurveyModal();
 });
