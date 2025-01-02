@@ -15,11 +15,15 @@
     "cross-env": "^7.0.3",
     "gh-pages": "^6.2.0",
     "parcel": "^2.13.3",
+    "parcel-plugin-static-files-copy": "^2.6.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17"
   },
   "homepage": "https://hyjoo1226.github.io/Moneytto-FE/",
   "dependencies": {
     "regenerator-runtime": "^0.14.1"
+  },
+  "staticFiles": {
+    "staticPath": "static"
   }
 }

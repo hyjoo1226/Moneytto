@@ -107,12 +107,12 @@ function createMessageBubble(content, sender = "user") {
 
   if (sender === "assistant") {
     avatar.classList.add("bg-gradient-to-br", "from-green-400", "to-green-600");
-    // const img = document.createElement("img");
-    // img.src = "./src/img/Moneytto_merge.png";
-    // img.alt = "Assistant Avatar";
-    // img.classList.add("w-8", "h-8", "rounded-full");
-    // avatar.appendChild(img);
-    avatar.textContent = "A";
+    const img = document.createElement("img");
+    img.src = "./static/moneycat3.png";
+    img.alt = "Assistant Avatar";
+    img.classList.add("w-8", "h-8", "rounded-full");
+    avatar.appendChild(img);
+    // avatar.textContent = "A";
   } else {
     avatar.classList.add("bg-gradient-to-br", "from-blue-500", "to-blue-700");
     avatar.textContent = "U";
@@ -166,6 +166,8 @@ async function getAssistantResponse(userMessage) {
   } else {
     // Naive mode
     const allMsgs = await getAllMessages();
+    console.log('들어옴')
+    console.log('allMsgs:',allMsgs)
     const messagesForAPI = [
       { role: "system", content: "You are a helpful assistant." },
       ...allMsgs.map((m) => ({ role: m.role, content: m.content })),
@@ -422,7 +424,15 @@ async function sendInvestmentTypeToBackend(investmentType) {
   }
 }
 
+// newChatBtn.addEventListener("click", async () => {
+//   // Clear DB data and UI
+//   await clearAllData();
+//   chatContainer.innerHTML = "";
+//   // Now user can start a new chat fresh
+// });
+
 function openSurveyModal() {
+  // chatContainer.innerHTML = "";
   surveyModal.classList.remove("hidden");
   currentQuestionIndex = 0;
   totalScore = 0;
