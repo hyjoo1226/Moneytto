@@ -176,8 +176,10 @@ async function getAssistantResponse(userMessage) {
       ...allMsgs.map((m) => ({ role: m.role, content: m.content })),
       { role: "user", content: userMessage },
     ];
-    payload = { messages: messagesForAPI };
+    console.log("확인용", choice)
+    payload = { question: userMessage, choice: choice };
     url = `${BASE_URL}/chat`;
+    choice = "";
   }
 
   const response = await fetch(url, {
@@ -244,7 +246,7 @@ newChatBtn.addEventListener("click", async () => {
   // Now user can start a new chat fresh
 });
 
-initDB().then(loadExistingMessages);
+initDB()//.then(loadExistingMessages);
 
 console.log(BASE_URL);
 
@@ -475,7 +477,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
         // 사용자가 선택한 옵션에 대해 처리하는 로직
         console.log("사용자가 선택한 옵션:", option);
         choice = option;
-        sendChoiceToBackend(choice)
+        // sendChoiceToBackend(choice)
         const responseMessage = `${option}에 대해 더 궁금한 점이 있나요?`;
         chatContainer.appendChild(createMessageBubble(responseMessage, "assistant"));
         saveMessage("assistant", responseMessage);
@@ -517,7 +519,7 @@ async function sendInvestmentTypeToBackend(investmentType) {
           if (userInput) {
             console.log("사용자가 입력한 값:", userInput);
             choice = userInput;
-            sendChoiceToBackend(choice)
+            // sendChoiceToBackend(choice)
             const responseMessage = `${userInput}에 대해 더 궁금한 점이 있나요?`;
             chatContainer.appendChild(createMessageBubble(responseMessage, "assistant"));
             saveMessage("assistant", responseMessage);
@@ -546,28 +548,28 @@ async function sendInvestmentTypeToBackend(investmentType) {
   }
 }
 
-async function sendChoiceToBackend(choice) {
-  const payload = { choice };
+// async function sendChoiceToBackend(choice) {
+//   const payload = { choice };
 
-  try {
-    const response = await fetch(`${BASE_URL}/send-choice`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+//   try {
+//     const response = await fetch(`${BASE_URL}/send-choice`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(payload),
+//     });
 
-    if (!response.ok) {
-      throw new Error("Failed to send choice to backend.");
-    }
+//     if (!response.ok) {
+//       throw new Error("Failed to send choice to backend.");
+//     }
 
-    const data = await response.json();
-    console.log("Choice:Response from backend:", data);
-  } catch (error) {
-    console.error("Choice:Error sending choice to backend:", error);
-  }
-}
+//     const data = await response.json();
+//     console.log("Choice:Response from backend:", data);
+//   } catch (error) {
+//     console.error("Choice:Error sending choice to backend:", error);
+//   }
+// }
 
 // newChatBtn.addEventListener("click", async () => {
 //   // Clear DB data and UI
