@@ -3,6 +3,7 @@
 
 ### 팀원: [김한송](https://github.com/Lycirrus), [윤정석](https://github.com/IcarusToSun), [조예슬](https://github.com/seul1230), [주현호](https://github.com/hyjoo1226)
 ### 프로젝트 기간: 2024.12.27 ~ 2025.01.03
+### BackEnd: [Moneytto-BE](https://github.com/hyjoo1226/Moneytto-BE)
 <hr>
 <br>
 
@@ -123,11 +124,11 @@
 
 
 ### 5. 배포 링크
-- front
+- FrontEnd
     - 프레임워크: Vercel
     - [moneytto-fe-eta.vercel.app](moneytto-fe-eta.vercel.app)
 
-- back
+- BackEnd
     - 프레임워크: Fly.io
     - 로컬환경과 달리 배포환경에서 패키지 간 의존성 충돌 발생
         - ```
@@ -143,12 +144,12 @@
 
 ### 6. 로컬 실행 방법
 
-- front 
+- FrontEnd
   - CORS 에러가 날 때는 추가로 CORS 확장 프로그램 이용
   ```
   PORT=5173 npm start
   ```
-- back
+- BackEnd
   ```
   python app.py
   ```
