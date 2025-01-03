@@ -48,12 +48,12 @@
     - embedding
         - 사용 모델
             - upstage의 solar-mini (*embedding-query*)
-            > 사용 이유 입력
+
 
     - VectorDB
         - 사용 DB
             - Pinecone
-            > Pinecone 사용 이유 입력
+
         - DB 내용
             - 사용자 투자 성향 : 설문조사 점수에 따른 사용자의 투자 성향
             - 최신 뉴스 : 네이버 searchAPI를 이용하여 최신 경제 뉴스 수집
@@ -67,7 +67,7 @@
         - cross-encoder
             - 사용 모델
                 - BAAI/bge-reranker-base
-                > 사용 이유 입력
+
             - 상위 문서 선택 수 : 3개
 
     - 답변 생성 모델
