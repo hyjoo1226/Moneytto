@@ -1,4 +1,4 @@
-# 당신의 금융투자 친구, 머니또!
+# 나의 투자 친구, 머니또!
 ![](./assets/project.png)
 
 ### 팀원: [김한송](https://github.com/Lycirrus), [윤정석](https://github.com/IcarusToSun), [조예슬](https://github.com/seul1230), [주현호](https://github.com/hyjoo1226)
@@ -28,42 +28,50 @@
 
 
 ### 2. 프로젝트 기본 내용
-- document
-    - 논문, 투자 정보 컬럼, 증권사 제공 정보를 기반으로 재정리한 자체 pdf 파일
-    - 네이버 최신 경제 뉴스 (searchAPI)
-    > HTML 형태로 변환하여 진행
+- 개발 환경
+    - 프로그래밍 언어: Python, JavaScript
+    - 프론트엔드: Tailwind CSS
+    - 백엔드: FastAPI
+    - 배포: Vercel, Fly.io
+    - 협업 도구: Git, Notion, GoogleDocs, Mattermost
 
-- text_splitter
-    - chunk_size : 1000
-    - chunk_overlap : 100
+- RAG 파이프라인
+    - document
+        - 논문, 투자 정보 컬럼, 증권사 제공 정보를 기반으로 재정리한 자체 pdf 파일
+        - 네이버 최신 경제 뉴스 (searchAPI)
+        > HTML 형태로 변환하여 진행
 
-- embedding
-    - 사용 모델
-        - upstage의 solar-mini (*embedding-query*)
-        > 사용 이유 입력
+    - text_splitter
+        - chunk_size : 1000
+        - chunk_overlap : 100
 
-- VectorDB
-    - 사용 DB
-        - Pinecone
-        > Pinecone 사용 이유 입력
-    - DB 내용
-        - 사용자 투자 성향 : 설문조사 점수에 따른 사용자의 투자 성향
-        - 최신 뉴스 : 네이버 searchAPI를 이용하여 최신 경제 뉴스 수집
-        - 금융 이론 : 경기를 기반으로 경기 사이클에서 현재 위치 판단
-
-- retriever & reranker
-    - dense retriever
-        - 유사도 계산 : mmr 알고리즘
-        - 반환 문서 수 : 3개
-
-    - cross-encoder
+    - embedding
         - 사용 모델
-            - BAAI/bge-reranker-base
+            - upstage의 solar-mini (*embedding-query*)
             > 사용 이유 입력
-        - 상위 문서 선택 수 : 3개
 
-- 답변 생성 모델
-    - GPT-4o-mini
+    - VectorDB
+        - 사용 DB
+            - Pinecone
+            > Pinecone 사용 이유 입력
+        - DB 내용
+            - 사용자 투자 성향 : 설문조사 점수에 따른 사용자의 투자 성향
+            - 최신 뉴스 : 네이버 searchAPI를 이용하여 최신 경제 뉴스 수집
+            - 금융 이론 : 경기를 기반으로 경기 사이클에서 현재 위치 판단
+
+    - retriever & reranker
+        - dense retriever
+            - 유사도 계산 : mmr 알고리즘
+            - 반환 문서 수 : 3개
+
+        - cross-encoder
+            - 사용 모델
+                - BAAI/bge-reranker-base
+                > 사용 이유 입력
+            - 상위 문서 선택 수 : 3개
+
+    - 답변 생성 모델
+        - GPT-4o-mini
 
 
 ### 3. 작동 방식
@@ -123,10 +131,9 @@
         > <br>증시, 물가지수와 같은 경제 관련 지수 및 한국은행과 증권사들의 동향 보고서 등을 활용하여 다양성과 정확도를 향상
 
 
-### 5. 배포 링크
+### 5. 배포(2025.01.01 ~ 2025.01.03)
 - FrontEnd
     - 프레임워크: Vercel
-    - [moneytto-fe-eta.vercel.app](moneytto-fe-eta.vercel.app)
 
 - BackEnd
     - 프레임워크: Fly.io
